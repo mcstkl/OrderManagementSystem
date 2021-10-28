@@ -7,29 +7,31 @@ using System.Threading.Tasks;
 
 namespace OMS.Classes
 {
-    public class OrderItem : Item
+    public class OrderItem
     {
         DataTable dtOrderItem;
 
+        public int Item_ID { get; set; }
         public int Order_ID { get; set; }
+        public double Price { get; set; }
         public int Quantity { get; set; }
         public string Description { get; set; }
 
         public OrderItem() { }
 
-        public override int Add()
+        public int Add()
         {
             throw new NotImplementedException();
         }
-        public override int Delete(int itemID)
+        public int Delete(int itemID)
         {
             throw new NotImplementedException();
         }
-        public override int Get()
+        public int Get()
         {
             throw new NotImplementedException();
         }
-        public override int Update(int itemID, string name, double price, int instock)
+        public int Update()
         {
             throw new NotImplementedException();
         }

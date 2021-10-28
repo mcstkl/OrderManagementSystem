@@ -10,15 +10,17 @@ using System.Threading.Tasks;
 
 namespace OMS.Classes
 {
-    public class StockItem : Item
+    public class StockItem
     {
-        string connectionString = ConfigurationManager.ConnectionStrings["cnnStrOMS"].ConnectionString;
+        private string connectionString = ConfigurationManager.ConnectionStrings["cnnStrOMS"].ConnectionString;
         DataTable dtStockItem;
 
+        public int Item_ID { get; set; }
+        public double Price { get; set; }
         public string Name { get; set; }
         public int InStock { get; set; }
 
-        public StockItem() : base()
+        public StockItem()
         {
         }
         public StockItem(string name, double price, int instock)
@@ -27,11 +29,11 @@ namespace OMS.Classes
             this.Price = price;
             this.InStock = instock;
         }
-        public StockItem(DataRow datarow) : base()
+        public StockItem(DataRow datarow)
         {
             LoadStockItemProperties(datarow);
         }
-        public StockItem(int stockItemID) : base()
+        public StockItem(int stockItemID)
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
             try
@@ -56,7 +58,7 @@ namespace OMS.Classes
             }
         }
 
-        public override int Add()
+        public int Add()
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
             SqlParameter[] parameters = {new SqlParameter("@Name", this.Name),
@@ -64,12 +66,12 @@ namespace OMS.Classes
                                          new SqlParameter("@InStock", this.InStock)};
             return myDal.ExecuteNonQuerySP("usp_AddStockItem", parameters);
         }
-        public override int Delete(int itemID)
+        public int Delete()
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
-            return myDal.ExecuteNonQuerySP("usp_DeleteStockItem", new SqlParameter[] { new SqlParameter("@Item_ID", itemID)});
+            return myDal.ExecuteNonQuerySP("usp_DeleteStockItem", new SqlParameter[] { new SqlParameter("@Item_ID", this.Item_ID)});
         }
-        public override int Get()
+        public int Get()
         {
 
             try
@@ -93,7 +95,7 @@ namespace OMS.Classes
             }
 
         }
-        public override int Update(int itemID, string name, double price, int instock)
+        public int Update(int itemID, string name, double price, int instock)
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
             SqlParameter[] parameters = {new SqlParameter("@Item_ID", itemID),
