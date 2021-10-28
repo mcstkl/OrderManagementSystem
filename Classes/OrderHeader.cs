@@ -22,6 +22,11 @@ namespace OMS.Classes
         List<OrderItem> OrderItems = new List<OrderItem>();
 
         public OrderHeader(){}
+        public OrderHeader(int state, DateTime orderDate) 
+        {
+            this.State = state;
+            this.OrderDate = orderDate;
+        }
         public OrderHeader(DataRow dataRow)
         {
             LoadOrderHeaderProperties(dataRow);
@@ -55,24 +60,23 @@ namespace OMS.Classes
         public int Add()
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
-            SqlParameter[] parameters = {new SqlParameter("@Name", this.State),
-                                         new SqlParameter("@Price", this.OrderDate)};
+            SqlParameter[] parameters = {new SqlParameter("@State", this.State),
+                                         new SqlParameter("@OrderDate", this.OrderDate)};
             return myDal.ExecuteNonQuerySP("usp_AddOrderHeader", parameters);
         }
-        //public int Delete(int orderID)
-        //{
-        //    SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
-        //    return myDal.ExecuteNonQuerySP("usp_DeleteStockItem", new SqlParameter[] { new SqlParameter("@Item_ID", itemID) });
-        //}
-        //public int Update(int itemID, string name, double price, int instock)
-        //{
-        //    SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
-        //    SqlParameter[] parameters = {new SqlParameter("@Item_ID", itemID),
-        //                                 new SqlParameter("@Name", name),
-        //                                 new SqlParameter("@Price", price),
-        //                                 new SqlParameter("@InStock", instock)};
-        //    return myDal.ExecuteNonQuerySP("usp_UpdateStockItem", parameters);
-        //}
+        public int Delete(int orderID)
+        {
+            SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+            return myDal.ExecuteNonQuerySP("usp_DeleteOrder", new SqlParameter[] { new SqlParameter("@Order_ID", orderID) });
+        }
+        public int Update(int orderID, int state, DateTime orderDate)
+        {
+            SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+            SqlParameter[] parameters = {new SqlParameter("@Order_ID", orderID),
+                                         new SqlParameter("@State", state),
+                                         new SqlParameter("@OrderDate", orderDate)};
+            return myDal.ExecuteNonQuerySP("usp_UpdateOrder", parameters);
+        }
 
         public override string ToString()
         {

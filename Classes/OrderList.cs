@@ -29,5 +29,15 @@ namespace OMS.Classes
                 this.Add(order);
             }
         }
+
+        public override string ToString()
+        {
+            string orderList = string.Empty;
+            foreach (OrderHeader item in this)
+            {
+                orderList += $"ID: {item.ID}\n State: {item.State}\n Date: {item.OrderDate}\n\n";
+            }
+            return orderList;
+        }
     }
 }

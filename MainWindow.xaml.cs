@@ -28,17 +28,13 @@ namespace OMS
         {
             InitializeComponent();
 
-            OrderHeader oh = new OrderHeader();
-            string output = $"ID: {oh.ID}\n State: {oh.State}\n Date: {oh.OrderDate}\n";
-            MessageBox.Show(output);
+            OrderHeader oh = new OrderHeader(4, DateTime.Today);
+            MessageBox.Show(oh.ToString());
+            oh.Update(2, 1, DateTime.Today);
+
 
             OrderList ol = new OrderList();
-            string list = string.Empty;
-            foreach(OrderHeader item in ol)
-            {
-                list += $"ID: {item.ID}\n State: {item.State}\n Date: {item.OrderDate}\n\n";
-            }
-            MessageBox.Show(list);
+            MessageBox.Show(ol.ToString());
 
 
 
