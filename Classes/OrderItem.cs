@@ -11,29 +11,32 @@ namespace OMS.Classes
     {
         DataTable dtOrderItem;
 
-        public int Item_ID { get; set; }
         public int Order_ID { get; set; }
+        public int Item_ID { get; set; }
+        public string Description { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
-        public string Description { get; set; }
 
         public OrderItem() { }
+        public OrderItem(int orderID, int itemID, string description, double price, int quantity) {
+            this.Order_ID = orderID;
+            this.Item_ID = itemID;
+            this.Description = description;
+            this.Price = price;
+            this.Quantity = quantity;
+        }
+        public OrderItem(DataRow datarow)
+        {
+            LoadOrderItemProperties(datarow);
+        }
 
-        public int Add()
+        private void LoadOrderItemProperties(DataRow dataRow)
         {
-            throw new NotImplementedException();
-        }
-        public int Delete(int itemID)
-        {
-            throw new NotImplementedException();
-        }
-        public int Get()
-        {
-            throw new NotImplementedException();
-        }
-        public int Update()
-        {
-            throw new NotImplementedException();
+            this.Order_ID = (int)dataRow["OrderHeaderId"];
+            this.Item_ID = (int)dataRow["StockItemId"];
+            this.Description = dataRow["Description"].ToString();
+            this.Price = double.Parse(dataRow["Price"].ToString());
+            this.Quantity = (int)dataRow["Quantity"];
         }
     }
 }

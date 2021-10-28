@@ -13,6 +13,7 @@ namespace OMS.Classes
     public class OrderHeader
     {
         DataTable dtOrderHeader;
+        
 
         private string connectionString = ConfigurationManager.ConnectionStrings["cnnStrOMS"].ConnectionString;
 
@@ -34,7 +35,7 @@ namespace OMS.Classes
 
 
 
-        public int Get()
+        public int GetOrder()
         {
             try
             {
@@ -57,19 +58,33 @@ namespace OMS.Classes
             }
 
         }
-        public int Add()
+        public int AddNewOrder()
         {
-            SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
-            SqlParameter[] parameters = {new SqlParameter("@State", this.State),
-                                         new SqlParameter("@OrderDate", this.OrderDate)};
-            return myDal.ExecuteNonQuerySP("usp_AddOrderHeader", parameters);
+            using(SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO OrderHeader(OrderStateId, OrderDate) output INSERTED.ID VALUES(@State, @OrderDate)", connection))
+                {
+                    cmd.Parameters.AddWithValue("@State", this.State);
+                    cmd.Parameters.AddWithValue("@OrderDate", this.OrderDate);
+                    connection.Open();
+
+                    this.ID = (int)cmd.ExecuteScalar();
+
+                    if (connection.State == ConnectionState.Open)
+                        connection.Close();
+                }
+            }
+            AddAllItemsToOrder();
+            return 0;
         }
-        public int Delete(int orderID)
+        public int DeleteOrder(int orderID)
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+            OrderItems = new List<OrderItem>();
+            myDal.ExecuteNonQuerySP("usp_DeleteOrderItem", new SqlParameter[] { new SqlParameter("@Order_ID", orderID) });
             return myDal.ExecuteNonQuerySP("usp_DeleteOrder", new SqlParameter[] { new SqlParameter("@Order_ID", orderID) });
         }
-        public int Update(int orderID, int state, DateTime orderDate)
+        public int UpdateOrder(int orderID, int state, DateTime orderDate)
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
             SqlParameter[] parameters = {new SqlParameter("@Order_ID", orderID),
@@ -77,17 +92,46 @@ namespace OMS.Classes
                                          new SqlParameter("@OrderDate", orderDate)};
             return myDal.ExecuteNonQuerySP("usp_UpdateOrder", parameters);
         }
+        public void AddNewItemToOrder(int itemID, string description, double price, int quantity)
+        {
+            OrderItems.Add(new OrderItem(this.ID, itemID, description, price, quantity));
+        }
+        public DataTable GetAllOrderItems()
+        {
+            SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+            DataTable dtOrderItems = new DataTable();
+            dtOrderItems = myDal.ExcuteStoredProc("usp_GetAllOrderItems");
+            return dtOrderItems;
+            
+        }
+
 
         public override string ToString()
         {
             return $"ID: {this.ID}\n State:{this.State}\n Date: {this.OrderDate}";
         }
 
+
         private void LoadOrderHeaderProperties(DataRow dataRow)
         {
             this.ID = (int)dataRow["Id"];
             this.State = (int)dataRow["OrderStateId"];
             this.OrderDate = (DateTime)dataRow["OrderDate"];
+        }
+        private int AddAllItemsToOrder()
+        {
+            int rowsAffected = 0;
+            foreach (OrderItem item in OrderItems)
+            {
+                SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+                SqlParameter[] parameters = {   new SqlParameter("@OrderID", this.ID),
+                                                new SqlParameter("@StockItemID", item.Item_ID),
+                                                new SqlParameter("@Description", item.Description),
+                                                new SqlParameter("@Price", item.Price),
+                                                new SqlParameter("@Quantity", item.Quantity)};
+                rowsAffected += myDal.ExecuteNonQuerySP("usp_AddOrderItem", parameters);
+            }
+            return rowsAffected;
         }
 
     }   

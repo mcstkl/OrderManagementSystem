@@ -127,6 +127,19 @@
       <DependentUpon>OrderManagementDb.mdf</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="icons\menu2blue.png" />
+    <Resource Include="icons\menu3blue.png" />
+    <Resource Include="icons\menublue.png" />
+    <Resource Include="icons\cardboardx.png" />
+    <Resource Include="icons\doc.png" />
+    <Resource Include="icons\exit.png" />
+    <Resource Include="icons\home.png" />
+    <Resource Include="icons\money.png" />
+    <Resource Include="icons\org.png" />
+    <Resource Include="icons\ratio.png" />
+    <Resource Include="icons\sales.png" />
+    <Resource Include="icons\shoppingcart.png" />
+    <Resource Include="icons\warehouse.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.8">
