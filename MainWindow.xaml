@@ -8,12 +8,21 @@
         Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Grid Background="#FFD6D6D6">
         <Grid x:Name="panelHeader" VerticalAlignment="Top" Height="50" Background="#FF0F4E7A" MouseDown="panelHeader_MouseDown">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="15*"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
             <TextBlock Text="Order Management System" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Century Gothic" FontSize="18" Foreground="White" FontWeight="Bold" />
+            <ListView Grid.Column="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" FontFamily="Century Gothic" FontSize="14" Foreground="White" BorderBrush="Transparent" Background="Transparent">
+                <ListViewItem Height="40">
+                        <Image x:Name="btnCloseX" Source="icons/x.png" MouseLeftButtonDown="btnCloseX_MouseLeftButtonDown"/>
+                </ListViewItem>
+            </ListView>
         </Grid>
         <Grid x:Name="sidePanel" Background="#FF0F4E7A" HorizontalAlignment="Left" Width="150">
             <StackPanel>
                 <Grid Height="150" Background="White">
-                    <Button HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Click="Button_Click">
+                    <Button Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Click="Button_Click">
                         <Image Source="icons/menuBlue.png" Height="20"/>
                     </Button>
                 </Grid>
@@ -21,33 +30,34 @@
                     <ListViewItem Height="30" FontWeight="Bold">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="icons/home.png" Height="20" VerticalAlignment="Center"/>
-                            <TextBlock Margin="15 0 0 0" Text="Home" VerticalAlignment="Center"/>
+                            <TextBlock Padding="15 5 60 5" Text="Home" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="30" FontWeight="Bold">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="icons/shoppingcart.png" Height="20" VerticalAlignment="Center"/>
-                            <TextBlock Margin="15 0 0 0" Text="Orders" VerticalAlignment="Center"/>
+                            <TextBlock Padding="15 5 60 5" Text="Orders" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="30" FontWeight="Bold">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="icons/sales.png" Height="20" VerticalAlignment="Center"/>
-                             <TextBlock Margin="15 0 0 0" Text="Inventory" VerticalAlignment="Center"/>
+                            <TextBlock Padding="15 5 40 5" Text="Inventory" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="30" FontWeight="Bold">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="icons/cardboardx.png" Height="20" VerticalAlignment="Center"/>
-                            <TextBlock Margin="15 0 0 0" Text="Export" VerticalAlignment="Center"/>
+                            <TextBlock Padding="15 5 60 5" Text="Export" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Height="30" FontWeight="Bold">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="icons/exit.png" Height="20" VerticalAlignment="Center"/>
-                            <TextBlock Margin="15 0 0 0" Text="Exit" VerticalAlignment="Center"/>
+                    <ListViewItem Height="30" FontWeight="Bold" >
+                        <StackPanel x:Name="btnCloseMenu" Orientation="Horizontal" MouseLeftButtonDown="btnCloseMenu_MouseLeftButtonDown" >
+                                <Image Source="icons/exit.png" Height="20" VerticalAlignment="Center" />
+                                <TextBlock Padding="15 5 80 5"  Text="Exit" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
+            
                 </ListView>
             </StackPanel>
         </Grid>

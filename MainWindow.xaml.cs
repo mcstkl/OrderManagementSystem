@@ -116,5 +116,16 @@ namespace OMS
                 DragMove();
             }
         }
+
+        private void btnCloseX_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Key pressed");
+            Environment.Exit(0);
+        }
+
+        private void btnCloseMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Environment.Exit(0);
+        }
     }
 }

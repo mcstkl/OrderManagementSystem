@@ -127,6 +127,7 @@
       <DependentUpon>OrderManagementDb.mdf</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="icons\x.png" />
     <Resource Include="icons\menu2blue.png" />
     <Resource Include="icons\menu3blue.png" />
     <Resource Include="icons\menublue.png" />
