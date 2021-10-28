@@ -64,9 +64,10 @@ namespace OMS.Classes
                                          new SqlParameter("@InStock", this.InStock)};
             return myDal.ExecuteNonQuerySP("usp_AddStockItem", parameters);
         }
-        public override int Delete()
+        public override int Delete(int itemID)
         {
-            throw new NotImplementedException();
+            SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+            return myDal.ExecuteNonQuerySP("usp_DeleteStockItem", new SqlParameter[] { new SqlParameter("@Item_ID", itemID)});
         }
         public override int Get()
         {
@@ -92,9 +93,14 @@ namespace OMS.Classes
             }
 
         }
-        public override int Update()
+        public override int Update(int itemID, string name, double price, int instock)
         {
-            throw new NotImplementedException();
+            SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+            SqlParameter[] parameters = {new SqlParameter("@Item_ID", itemID),
+                                         new SqlParameter("@Name", name),
+                                         new SqlParameter("@Price", price),
+                                         new SqlParameter("@InStock", instock)};
+            return myDal.ExecuteNonQuerySP("usp_UpdateStockItem", parameters);
         }
 
         private void LoadStockItemProperties(DataRow dataRow)

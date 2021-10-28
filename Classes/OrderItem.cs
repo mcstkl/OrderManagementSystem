@@ -21,7 +21,7 @@ namespace OMS.Classes
         {
             throw new NotImplementedException();
         }
-        public override int Delete()
+        public override int Delete(int itemID)
         {
             throw new NotImplementedException();
         }
@@ -29,7 +29,7 @@ namespace OMS.Classes
         {
             throw new NotImplementedException();
         }
-        public override int Update()
+        public override int Update(int itemID, string name, double price, int instock)
         {
             throw new NotImplementedException();
         }

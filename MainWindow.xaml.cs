@@ -27,9 +27,9 @@ namespace OMS
         public MainWindow()
         {
             InitializeComponent();
-            StockItem stockItem = new StockItem("Sponge", 4, 400);
+            StockItem stockItem = new StockItem("Shampoo", 12, 80);
             MessageBox.Show(stockItem.ToString());
-            stockItem.Add();
+            stockItem.Update(10, stockItem.Name, stockItem.Price, stockItem.InStock);
 
 
             StockItemList stockItems = new StockItemList();

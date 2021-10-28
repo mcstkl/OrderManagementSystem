@@ -11,9 +11,9 @@ namespace OMS.Classes
         public double Price { get; set; }
         public int Item_ID { get; set; }
 
-        public abstract int Update();
+        public abstract int Update(int itemID, string name, double price, int instock);
         public abstract int Add();
-        public abstract int Delete();
+        public abstract int Delete(int itemID);
         public abstract int Get();
     }
 }
