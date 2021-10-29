@@ -32,12 +32,10 @@ namespace OMS
         public MainWindow()
         {
             InitializeComponent();
-            timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
-            timer.Tick += Timer_Tick;
-
-            panelWidth = (int)sidePanel.Width;
-
+            InitializeMenu();
+            
+          
+            #region hi
             //OrderHeader oh = new OrderHeader();
             //DataTable dtAllItems = oh.GetAllOrderItems();
             //string allItems = string.Empty;
@@ -56,7 +54,6 @@ namespace OMS
             //                $"Quantity: {item.Quantity}\n\n";
             //}
             //MessageBox.Show(allItems);
-
             //OrderHeader oh = new OrderHeader(4, DateTime.Today);
             //MessageBox.Show(oh.ToString());
             //oh.AddNewItemToOrder(5, "Bag of Nails", 65, 10);
@@ -66,27 +63,33 @@ namespace OMS
             //oh.GetOrder();
             //oh.AddNewOrder();
             //oh.DeleteOrder(18);
-
-
             //OrderList ol = new OrderList();
             //MessageBox.Show(ol.ToString());
-
-
             //StockItem stockItem = new StockItem("Shampoo", 12, 200);
             //MessageBox.Show(stockItem.ToString());
             //stockItem.Update(10, stockItem.Name, stockItem.Price, stockItem.InStock);
-
             //StockItemList stockItems = new StockItemList();
             //MessageBox.Show(stockItems.ToString());
+            #endregion
 
         }
 
+
+        // +++++++++++++++++++++ MENU FUNCTIONS +++++++++++++++++++++++++++++++++
+        private void InitializeMenu()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+            timer.Tick += Timer_Tick;
+            panelWidth = (int)sidePanel.Width;
+        }
         private void Timer_Tick(object sender, EventArgs e)
         {
             if (hidden)
             {
                 sidePanel.Width += 5;
-                if(sidePanel.Width >= panelWidth)
+                imgLogo.Visibility = Visibility.Visible;
+                if (sidePanel.Width >= panelWidth)
                 {
                     timer.Stop();
                     hidden = false;
@@ -99,16 +102,15 @@ namespace OMS
                 {
                     timer.Stop();
                     hidden = true;
+                    imgLogo.Visibility = Visibility.Hidden;
                 }
             }
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             timer.Start();
 
         }
-
         private void panelHeader_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if(e.LeftButton == MouseButtonState.Pressed)
@@ -117,15 +119,49 @@ namespace OMS
             }
         }
 
+
+
+        // +++++++++++++++++++++++ MENU BUTTONS +++++++++++++++++++++++++++++++++++
         private void btnCloseX_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Key pressed");
             Environment.Exit(0);
         }
-
         private void btnCloseMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Environment.Exit(0);
         }
+
+        private void btnHomeMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            panelHome.Visibility = Visibility.Visible;
+            panelOrders.Visibility = Visibility.Hidden;
+            panelInventory.Visibility = Visibility.Hidden;
+            panelExport.Visibility = Visibility.Hidden;
+        }
+        private void btnOrdersMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            panelHome.Visibility = Visibility.Hidden;
+            panelOrders.Visibility = Visibility.Visible;
+            panelInventory.Visibility = Visibility.Hidden;
+            panelExport.Visibility = Visibility.Hidden;
+        }
+        private void btnInventoryMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            panelHome.Visibility = Visibility.Hidden;
+            panelOrders.Visibility = Visibility.Hidden;
+            panelInventory.Visibility = Visibility.Visible;
+            panelExport.Visibility = Visibility.Hidden;
+        }
+        private void btnExportMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            panelHome.Visibility = Visibility.Hidden;
+            panelOrders.Visibility = Visibility.Hidden;
+            panelInventory.Visibility = Visibility.Hidden;
+            panelExport.Visibility = Visibility.Visible;
+        }
+
+        // +++++++++++++++++++++++++++ PANEL SWAP +++++++++++++++++++++++++++++++
+
     }
 }

@@ -25,28 +25,29 @@
                     <Button Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" BorderBrush="Transparent" Click="Button_Click">
                         <Image Source="icons/menuBlue.png" Height="20"/>
                     </Button>
+                    <Image x:Name="imgLogo" Margin="20 20 20 20" Source="icons/logo.png"></Image>
                 </Grid>
                 <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" FontFamily="Century Gothic" FontSize="14" Foreground="White" BorderBrush="Transparent" Background="Transparent">
                     <ListViewItem Height="30" FontWeight="Bold">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel x:Name="btnHomeMenu" Orientation="Horizontal" MouseLeftButtonDown="btnHomeMenu_MouseLeftButtonDown">
                             <Image Source="icons/home.png" Height="20" VerticalAlignment="Center"/>
                             <TextBlock Padding="15 5 60 5" Text="Home" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="30" FontWeight="Bold">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel x:Name="btnOrdersMenu" Orientation="Horizontal" MouseLeftButtonDown="btnOrdersMenu_MouseLeftButtonDown">
                             <Image Source="icons/shoppingcart.png" Height="20" VerticalAlignment="Center"/>
                             <TextBlock Padding="15 5 60 5" Text="Orders" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="30" FontWeight="Bold">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel x:Name="btnInventoryMenu" Orientation="Horizontal" MouseLeftButtonDown="btnInventoryMenu_MouseLeftButtonDown">
                             <Image Source="icons/sales.png" Height="20" VerticalAlignment="Center"/>
                             <TextBlock Padding="15 5 40 5" Text="Inventory" VerticalAlignment="Center"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem Height="30" FontWeight="Bold">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel x:Name="btnExportMenu" Orientation="Horizontal" MouseLeftButtonDown="btnExportMenu_MouseLeftButtonDown">
                             <Image Source="icons/cardboardx.png" Height="20" VerticalAlignment="Center"/>
                             <TextBlock Padding="15 5 60 5" Text="Export" VerticalAlignment="Center"/>
                         </StackPanel>
@@ -61,5 +62,62 @@
                 </ListView>
             </StackPanel>
         </Grid>
+        
+        <StackPanel x:Name="panelHome" Background="Transparent" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="400" Width="650">
+        <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+            
+        </Grid>
+        </StackPanel>
+        <StackPanel x:Name="panelOrders" Visibility="Hidden" Background="Green" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="400" Width="650">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="panelInventory" Visibility="Hidden" Background="Red" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="400" Width="650">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+            </Grid>
+        </StackPanel>
+        <StackPanel x:Name="panelExport" Visibility="Hidden" Background="Violet" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="400" Width="650">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>
