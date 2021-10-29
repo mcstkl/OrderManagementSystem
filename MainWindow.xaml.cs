@@ -26,15 +26,19 @@ namespace OMS
     /// </summary>
     public partial class MainWindow : Window
     {
+        OrderList allOrders = new OrderList();
         DispatcherTimer timer;
         int panelWidth;
         bool hidden;
+
+
         public MainWindow()
         {
             InitializeComponent();
             InitializeMenu();
+            lvOrderHeaders.ItemsSource = allOrders;
             
-          
+
             #region hi
             //OrderHeader oh = new OrderHeader();
             //DataTable dtAllItems = oh.GetAllOrderItems();
@@ -87,6 +91,10 @@ namespace OMS
         {
             if (hidden)
             {
+                panelHome.Width -= 5;
+                panelOrders.Width -= 5;
+                panelInventory.Width -= 5;
+                panelExport.Width -= 5;
                 sidePanel.Width += 5;
                 imgLogo.Visibility = Visibility.Visible;
                 if (sidePanel.Width >= panelWidth)
@@ -97,6 +105,10 @@ namespace OMS
             }
             else
             {
+                panelHome.Width += 5;
+                panelOrders.Width += 5;
+                panelInventory.Width += 5;
+                panelExport.Width += 5;
                 sidePanel.Width -= 5;
                 if(sidePanel.Width <= 35)
                 {
@@ -109,7 +121,6 @@ namespace OMS
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             timer.Start();
-
         }
         private void panelHeader_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -161,7 +172,38 @@ namespace OMS
             panelExport.Visibility = Visibility.Visible;
         }
 
-        // +++++++++++++++++++++++++++ PANEL SWAP +++++++++++++++++++++++++++++++
+
+        // +++++++++++++++++++++++++++ ORDER TAB +++++++++++++++++++++++++++++++
+
+        private void lvOrderHeaders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            OrderHeader oh = (OrderHeader)lvOrderHeaders.SelectedItem;
+            StockItemList allStockItems = new StockItemList();
+            DataTable dtAllOrders = oh.GetAllOrderItems();
+            string orderDetails = String.Empty;
+            if(oh.OrderItems != null)
+            {
+                foreach(DataRow row in dtAllOrders.Rows)
+                {
+                    if((int)row["OrderHeaderId"] == oh.ID)
+                    {
+                        if(orderDetails == string.Empty)orderDetails += $"\n\n\t\tFor Order Number {oh.ID} the following Items have been added\n\n";
+                        { 
+                            foreach(StockItem item in allStockItems)
+                            {
+                                if (item.Item_ID == (int)row["StockItemId"])
+                                {
+                                    orderDetails += $"\t{item.Name, 15}";
+                                }
+                            }
+                        }
+                        orderDetails += $"\t\tQuantity: {row["Quantity"], 5}" +
+                                        $"\t\tDescription: {row["Description"], 10}\n\n";
+                    }
+                }
+            }
+            txtCurrentOrderDetails.Text = orderDetails;
+        }
 
     }
 }

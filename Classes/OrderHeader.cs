@@ -20,7 +20,19 @@ namespace OMS.Classes
         public int ID { get; set; }
         public int State { get; set; }
         public DateTime OrderDate { get; set; }
-        List<OrderItem> OrderItems = new List<OrderItem>();
+
+        public string ConvertedState
+        {
+            get {   if (this.State == 1) return OrderState.New.ToString();
+                    if (this.State == 2) return OrderState.Pending.ToString();
+                    if (this.State == 3) return OrderState.Rejected.ToString();
+                    if (this.State == 4) return OrderState.Complete.ToString();
+                return null;
+            }
+            set { ConvertedState = value; }
+        }
+
+        public List<OrderItem> OrderItems = new List<OrderItem>();
 
         public OrderHeader(){}
         public OrderHeader(int state, DateTime orderDate) 
@@ -101,6 +113,7 @@ namespace OMS.Classes
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
             DataTable dtOrderItems = new DataTable();
             dtOrderItems = myDal.ExcuteStoredProc("usp_GetAllOrderItems");
+            this.dtOrderHeader = dtOrderItems;
             return dtOrderItems;
             
         }
