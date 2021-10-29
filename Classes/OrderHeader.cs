@@ -120,7 +120,7 @@ namespace OMS.Classes
         }
         public void AddNewItemToOrder(int itemID, string description, double price, int quantity)
         {
-            OrderItems.Add(new OrderItem(this.ID, itemID, description, price, quantity));
+            this.Add(new OrderItem(this.ID, itemID, description, price, quantity));
         }
         public DataTable GetAllOrderItems()
         {
@@ -146,7 +146,7 @@ namespace OMS.Classes
         private int AddAllItemsToOrder()
         {
             int rowsAffected = 0;
-            foreach (OrderItem item in OrderItems)
+            foreach (OrderItem item in this)
             {
                 SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
                 SqlParameter[] parameters = {   new SqlParameter("@OrderID", this.ID),
@@ -158,6 +158,8 @@ namespace OMS.Classes
             }
             return rowsAffected;
         }
+
+
         private void AddItemsToHeader()
         {
             DataTable dtOrderItems = GetAllOrderItems();

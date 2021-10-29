@@ -65,5 +65,17 @@ namespace OMS.Classes
                                                                 new SqlParameter("@StockItem_ID", this.Item_ID)};
             return myDal.ExecuteNonQuerySP("usp_DeleteOrderItem", parameters);
         }
+
+        public int AddItemToOrder()
+        {
+            SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+            SqlParameter[] parameters = new SqlParameter[] { new SqlParameter("@Order_ID", this.Order_ID),
+                                                                new SqlParameter("@StockItem_ID", this.Item_ID),
+                                                                new SqlParameter("@Description", this.Description),
+                                                                new SqlParameter("@Price", this.Price),
+                                                                new SqlParameter("@Quantity", this.Quantity),
+            };
+            return myDal.ExecuteNonQuerySP("usp_AddOrderItem", parameters);
+        }
     }
 }

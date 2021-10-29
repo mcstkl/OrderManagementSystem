@@ -304,11 +304,36 @@ namespace OMS
 
         private void btnOrderAddItem_Click(object sender, RoutedEventArgs e)
         {
+            int orderIndex = lvOrderHeaders.SelectedIndex;
+            OrderHeader order = (OrderHeader)lvOrderHeaders.SelectedItem;
+            OrderItem orderItem = new OrderItem();
+            StockItemList stockItems = new StockItemList();
+            foreach(var item in stockItems)
+            {
+                if(item.Name == cboSearchItem.Text)
+                {
+                    orderItem.Item_ID = item.Item_ID;
+                    orderItem.Price = item.Price;
+                }
+            }
+            orderItem.Order_ID = order.ID;
+            orderItem.Description = txtDescription.Text;
+            orderItem.Quantity = int.Parse(txtQuantity.Text);
+            orderItem.AddItemToOrder();
+
+            LoadOrderHeaderListView();
+            lvOrderHeaders.SelectedIndex = orderIndex;
+            lvOrderHeaders.ScrollIntoView(orderIndex);
+            lvItems.SelectedIndex = 0;
+            lvItems.ScrollIntoView(lvItems.SelectedIndex);
+            LoadItemListView();
+
         }
         private void btnOrderDeleteItem_Click(object sender, RoutedEventArgs e)
         {
             if (lvItems.SelectedItem != null)
             {
+                int orderIndex = lvOrderHeaders.SelectedIndex;
                 string message = $"Are you sure yo want to delete this Item from the order? \n" +
                                     $"This item will be permanently deleted!";
                 string caption = "Delete Item?";
@@ -321,10 +346,13 @@ namespace OMS
                         if (item.DeleteOrderItem() == 1)
                         {
                             MessageBox.Show("Item successfully deleted!", "Success", MessageBoxButton.OK,
-                                MessageBoxImage.Information);
-                            LoadItemListView();
+                            MessageBoxImage.Information);
+                            LoadOrderHeaderListView();
+                            lvOrderHeaders.SelectedIndex = orderIndex;
+                            lvOrderHeaders.ScrollIntoView(orderIndex);
                             lvItems.SelectedIndex = 0;
                             lvItems.ScrollIntoView(lvItems.SelectedIndex);
+                            LoadItemListView();
                         }
                     }
                     catch (Exception ex)
