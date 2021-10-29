@@ -1,6 +1,9 @@
-﻿using System;
+﻿using App.SqlHelper;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +13,29 @@ namespace OMS.Classes
     public class OrderItem
     {
         DataTable dtOrderItem;
-
+        private string connectionString = ConfigurationManager.ConnectionStrings["cnnStrOMS"].ConnectionString;
         public int Order_ID { get; set; }
         public int Item_ID { get; set; }
         public string Description { get; set; }
         public double Price { get; set; }
         public int Quantity { get; set; }
+
+        public string ItemDetail
+        {
+            get {
+                StockItemList list = new StockItemList();
+                string orderDetail = string.Empty;
+                foreach(var item in list)
+                {
+                    if(item.Item_ID == this.Item_ID)
+                    {
+                        orderDetail += $"{item.Name} - QTY: {this.Quantity} - Price: {this.Price}";
+                    }
+                }
+                return orderDetail; 
+            }
+        }
+
 
         public OrderItem() { }
         public OrderItem(int orderID, int itemID, string description, double price, int quantity) {
@@ -37,6 +57,13 @@ namespace OMS.Classes
             this.Description = dataRow["Description"].ToString();
             this.Price = double.Parse(dataRow["Price"].ToString());
             this.Quantity = (int)dataRow["Quantity"];
+        }
+        public int DeleteOrderItem()
+        {
+            SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+            SqlParameter[] parameters = new SqlParameter[] { new SqlParameter("@Order_ID", this.Order_ID),
+                                                                new SqlParameter("@StockItem_ID", this.Item_ID)};
+            return myDal.ExecuteNonQuerySP("usp_DeleteOrderItem", parameters);
         }
     }
 }

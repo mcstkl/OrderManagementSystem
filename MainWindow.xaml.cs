@@ -27,6 +27,7 @@ namespace OMS
     public partial class MainWindow : Window
     {
         OrderList allOrders = new OrderList();
+        OrderHeader allItems = new OrderHeader();
         DispatcherTimer timer;
         int panelWidth;
         bool hidden;
@@ -180,12 +181,44 @@ namespace OMS
             allOrders = null;
             allOrders = new OrderList();
             lvOrderHeaders.ItemsSource = allOrders;
+           LoadComboBoxSearchItem();
+
+
+        }
+        private void LoadItemListView()
+        {
+            allItems = null;
+            allItems = new OrderHeader();
+            OrderHeader order = (OrderHeader)lvOrderHeaders.SelectedItem;
+            lvItems.ItemsSource = order;
+        }
+
+
+        private void LoadComboBoxSearchItem()
+        {
+            cboSearchItem.Items.Clear();
+            try
+            {
+                StockItemList stockItems = new StockItemList();
+                stockItems.Sort();
+                foreach (var row in stockItems)
+                {
+                    ComboBoxItem item = new ComboBoxItem();
+                    item.Content = row.Name;
+                    item.Tag = row.Item_ID;
+                    cboSearchItem.Items.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
 
         private void lvOrderHeaders_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            LoadItemListView();
         }
 
         private string OrderItemsToString()
@@ -224,9 +257,12 @@ namespace OMS
 
         private void btnOrderAdd_Click(object sender, RoutedEventArgs e)
         {
-
+            OrderHeader oh = new OrderHeader(1, DateTime.Now);
+            oh.AddNewOrder();
+            LoadOrderHeaderListView();
+            lvOrderHeaders.SelectedIndex = 0;
+            lvOrderHeaders.ScrollIntoView(lvOrderHeaders.SelectedIndex);
         }
-
         private void btnOrderDelete_Click(object sender, RoutedEventArgs e)
         {
             if (lvOrderHeaders.SelectedItem != null)
@@ -266,10 +302,47 @@ namespace OMS
             }
         }
 
-        private void btnOrderDetails_Click(object sender, RoutedEventArgs e)
+        private void btnOrderAddItem_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(OrderItemsToString(), $"For this order the following items have been added", MessageBoxButton.OK);
-
+        }
+        private void btnOrderDeleteItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvItems.SelectedItem != null)
+            {
+                string message = $"Are you sure yo want to delete this Item from the order? \n" +
+                                    $"This item will be permanently deleted!";
+                string caption = "Delete Item?";
+                if (MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
+                    MessageBoxResult.Yes)
+                {
+                    OrderItem item = (OrderItem)lvItems.SelectedItem;
+                    try
+                    {
+                        if (item.DeleteOrderItem() == 1)
+                        {
+                            MessageBox.Show("Item successfully deleted!", "Success", MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                            LoadItemListView();
+                            lvItems.SelectedIndex = 0;
+                            lvItems.ScrollIntoView(lvItems.SelectedIndex);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        message = $"Something went wrong!\nThe Item details were not deleted!\n{ex.Message}";
+                        MessageBox.Show(message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Item was not deleted", "Operation canceled", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select an Item to be deleted first.");
+            }
+           
         }
     }
 }

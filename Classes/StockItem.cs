@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OMS.Classes
 {
-    public class StockItem
+    public class StockItem : IComparable
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["cnnStrOMS"].ConnectionString;
         DataTable dtStockItem;
@@ -116,6 +116,12 @@ namespace OMS.Classes
         public override string ToString()
         {
             return $"ID: {this.Item_ID}\n Name:{this.Name}\n Price: {this.Price:C2}\n Stock: {this.InStock}";
+        }
+
+        public int CompareTo(object obj)
+        {
+            StockItem other = (StockItem)obj;
+            return Name.CompareTo(other.Name);
         }
     }
 }

@@ -18,6 +18,7 @@ namespace OMS.Classes
             GetAllStockItems();
         }
 
+
         public void GetAllStockItems()
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);

@@ -12,7 +12,7 @@ namespace OMS.Classes
 {
     public class OrderHeader : List<OrderItem>
     {
-        DataTable dtOrderHeader;
+        public DataTable dtOrderHeader;
         
 
         private string connectionString = ConfigurationManager.ConnectionStrings["cnnStrOMS"].ConnectionString;
@@ -107,7 +107,7 @@ namespace OMS.Classes
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
             OrderItems = new List<OrderItem>();
-            myDal.ExecuteNonQuerySP("usp_DeleteOrderItem", new SqlParameter[] { new SqlParameter("@Order_ID", orderID) });
+            myDal.ExecuteNonQuerySP("usp_DeleteAllItemsFromOrder", new SqlParameter[] { new SqlParameter("@Order_ID", orderID) });
             return myDal.ExecuteNonQuerySP("usp_DeleteOrder", new SqlParameter[] { new SqlParameter("@Order_ID", orderID) });
         }
         public int UpdateOrder(int orderID, int state, DateTime orderDate)
