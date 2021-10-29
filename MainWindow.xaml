@@ -98,29 +98,41 @@
                 <ListView x:Name="lvOrderHeaders" Grid.Row="1" Grid.Column="1"
                               Grid.ColumnSpan="1" Background="White" SelectionChanged="lvOrderHeaders_SelectionChanged" Grid.RowSpan="1" 
                               >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="BorderBrush" Value="#486581"/>
+                            <Setter Property="FontSize" Value="15"/>
+                            <Setter Property="Foreground" Value="#333"/>
+                            <Setter Property="FontFamily" Value="Century Gothic"/>
+                            <Setter Property="FontWeight" Value="DemiBold"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Width="200" Header="Order ID" DisplayMemberBinding="{Binding Path=ID}"/>
+                            <GridViewColumn Width="150" Header="Order ID" DisplayMemberBinding="{Binding Path=ID}"/>
                             <GridViewColumn Width="200"  Header="Order Date" DisplayMemberBinding="{Binding Path=OrderDate}"/>
-                            <GridViewColumn Width="200" Header="Status" DisplayMemberBinding="{Binding Path=ConvertedState}"/>
+                            <GridViewColumn Width="150"  Header="Number Of Items" DisplayMemberBinding="{Binding Path=NumberOfItems}"/>
+                            <GridViewColumn Width="180" Header="Status" DisplayMemberBinding="{Binding Path=ConvertedState}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>
-                <Button FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818"  Margin="20 0 0 0" HorizontalAlignment="Left" Height="50" Width="150" Grid.Column="1" Grid.Row="2">
+                <Button x:Name="btnOrderAdd" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818"  Margin="20 0 0 0" HorizontalAlignment="Left" Height="50" Width="150" Grid.Column="1" Grid.Row="2" Click="btnOrderAdd_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
                         </Style>
                     </Button.Resources>
                     Add</Button>
-                <Button FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Height="50" Width="150" Grid.Column="1" Grid.Row="2">
+                <Button x:Name="btnOrderDelete" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Height="50" Width="150" Grid.Column="1" Grid.Row="2" Click="btnOrderDelete_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
                         </Style>
                     </Button.Resources>
                     Delete</Button>
-                <Button FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Margin="0 0 20 0" HorizontalAlignment="Right" Height="50" Width="150" Grid.Column="1" Grid.Row="2">
+                <Button x:Name="btnOrderDetails" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Margin="0 0 20 0" HorizontalAlignment="Right" Height="50" Width="150" Grid.Column="1" Grid.Row="2" Click="btnOrderDetails_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>

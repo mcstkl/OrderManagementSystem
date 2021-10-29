@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace OMS.Classes
 {
-    public class OrderHeader
+    public class OrderHeader : List<OrderItem>
     {
         DataTable dtOrderHeader;
         
@@ -20,6 +20,13 @@ namespace OMS.Classes
         public int ID { get; set; }
         public int State { get; set; }
         public DateTime OrderDate { get; set; }
+        public int NumberOfItems
+        {
+            get {
+                return this.Count; }
+            
+        }
+
 
         public string ConvertedState
         {
@@ -34,15 +41,22 @@ namespace OMS.Classes
 
         public List<OrderItem> OrderItems = new List<OrderItem>();
 
-        public OrderHeader(){}
+        public OrderHeader()
+        {
+            AddItemsToHeader();
+        }
+
+
         public OrderHeader(int state, DateTime orderDate) 
         {
             this.State = state;
             this.OrderDate = orderDate;
+            AddItemsToHeader();
         }
         public OrderHeader(DataRow dataRow)
         {
             LoadOrderHeaderProperties(dataRow);
+            AddItemsToHeader();
         }
 
 
@@ -113,9 +127,7 @@ namespace OMS.Classes
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
             DataTable dtOrderItems = new DataTable();
             dtOrderItems = myDal.ExcuteStoredProc("usp_GetAllOrderItems");
-            this.dtOrderHeader = dtOrderItems;
             return dtOrderItems;
-            
         }
 
 
@@ -145,6 +157,18 @@ namespace OMS.Classes
                 rowsAffected += myDal.ExecuteNonQuerySP("usp_AddOrderItem", parameters);
             }
             return rowsAffected;
+        }
+        private void AddItemsToHeader()
+        {
+            DataTable dtOrderItems = GetAllOrderItems();
+            foreach (DataRow row in dtOrderItems.Rows)
+            {
+                if (this.ID == (int)row["OrderHeaderId"])
+                {
+                    OrderItem item = new OrderItem(row);
+                    this.Add(item);
+                }
+            }
         }
 
     }   

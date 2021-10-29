@@ -36,8 +36,7 @@ namespace OMS
         {
             InitializeComponent();
             InitializeMenu();
-            lvOrderHeaders.ItemsSource = allOrders;
-            
+            LoadOrderHeaderListView();
 
             #region hi
             //OrderHeader oh = new OrderHeader();
@@ -175,35 +174,102 @@ namespace OMS
 
         // +++++++++++++++++++++++++++ ORDER TAB +++++++++++++++++++++++++++++++
 
+        //Init
+        private void LoadOrderHeaderListView()
+        {
+            allOrders = null;
+            allOrders = new OrderList();
+            lvOrderHeaders.ItemsSource = allOrders;
+        }
+
+
         private void lvOrderHeaders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private string OrderItemsToString()
         {
             OrderHeader oh = (OrderHeader)lvOrderHeaders.SelectedItem;
             StockItemList allStockItems = new StockItemList();
-            DataTable dtAllOrders = oh.GetAllOrderItems();
-            string orderDetails = String.Empty;
-            if(oh.OrderItems != null)
+            if(oh != null)
             {
-                foreach(DataRow row in dtAllOrders.Rows)
+
+            
+                DataTable dtAllOrders = oh.GetAllOrderItems();
+                string orderDetails = String.Empty;
+                if (oh.OrderItems != null)
                 {
-                    if((int)row["OrderHeaderId"] == oh.ID)
+                    foreach (DataRow row in dtAllOrders.Rows)
                     {
-                        if(orderDetails == string.Empty)orderDetails += $"\n\n\t\tFor Order Number {oh.ID} the following Items have been added\n\n";
-                        { 
-                            foreach(StockItem item in allStockItems)
-                            {
-                                if (item.Item_ID == (int)row["StockItemId"])
+                        if ((int)row["OrderHeaderId"] == oh.ID)
+                        {
+                        
+                                foreach (StockItem item in allStockItems)
                                 {
-                                    orderDetails += $"\t{item.Name, 15}";
+                                    if (item.Item_ID == (int)row["StockItemId"])
+                                    {
+                                        orderDetails += $"Item: {item.Name}\n";
+                                    }
                                 }
-                            }
+                            orderDetails += $"Quantity: {row["Quantity"]}\n" +
+                                            $"Description: {row["Description"]}\n\n";
                         }
-                        orderDetails += $"\t\tQuantity: {row["Quantity"], 5}" +
-                                        $"\t\tDescription: {row["Description"], 10}\n\n";
                     }
                 }
+            return orderDetails;
             }
-            txtCurrentOrderDetails.Text = orderDetails;
+            return "Nothing added";
         }
 
+        private void btnOrderAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnOrderDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvOrderHeaders.SelectedItem != null)
+            {
+                string message = $"Are you sure yo want to delete this Order? \n" +
+                                    $"The Order Details and all Order items will be permanently deleted!";
+                string caption = "Delete Order?";
+                if (MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
+                    MessageBoxResult.Yes)
+                {
+                    OrderHeader selectedOrder = (OrderHeader)lvOrderHeaders.SelectedItem;
+                    try
+                    {
+                        if (selectedOrder.DeleteOrder(selectedOrder.ID) == 1)
+                        {
+                            MessageBox.Show("Order successfully deleted!", "Success", MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                            LoadOrderHeaderListView();
+                            lvOrderHeaders.SelectedIndex = 0;
+                            lvOrderHeaders.ScrollIntoView(lvOrderHeaders.SelectedIndex);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        message = $"Something went wrong!\nThe Order details were not deleted!\n{ex.Message}";
+                        MessageBox.Show(message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Order was not deleted", "Operation canceled", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select an Order to be deleted first.");
+            }
+        }
+
+        private void btnOrderDetails_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(OrderItemsToString(), $"For this order the following items have been added", MessageBoxButton.OK);
+
+        }
     }
 }

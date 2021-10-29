@@ -16,10 +16,10 @@ namespace OMS.Classes
 
         public OrderList()
         {
-            GetAllOrders();
+            GetAllOrderHeaders();
         }
 
-        public void GetAllOrders()
+        public void GetAllOrderHeaders()
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
             dtOrders = myDal.ExcuteStoredProc("usp_GetAllOrders");
