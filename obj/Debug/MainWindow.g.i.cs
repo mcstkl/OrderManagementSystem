@@ -169,31 +169,7 @@ namespace OMS {
         #line hidden
         
         
-        #line 210 "..\..\MainWindow.xaml"
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.ListView lvOrderHeaders;
-        
-        #line default
-        #line hidden
-        
-        
-        #line 241 "..\..\MainWindow.xaml"
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.Button btnOrderAdd;
-        
-        #line default
-        #line hidden
-        
-        
-        #line 248 "..\..\MainWindow.xaml"
-        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.Button btnOrderDelete;
-        
-        #line default
-        #line hidden
-        
-        
-        #line 255 "..\..\MainWindow.xaml"
+        #line 209 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button btnOrderAddItem;
         
@@ -201,7 +177,7 @@ namespace OMS {
         #line hidden
         
         
-        #line 262 "..\..\MainWindow.xaml"
+        #line 220 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button btnOrderDeleteItem;
         
@@ -209,9 +185,25 @@ namespace OMS {
         #line hidden
         
         
-        #line 277 "..\..\MainWindow.xaml"
+        #line 232 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
-        internal System.Windows.Controls.StackPanel panelInventory;
+        internal System.Windows.Controls.ListView lvOrderHeaders;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 263 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button btnOrderAdd;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 274 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button btnOrderDelete;
         
         #line default
         #line hidden
@@ -219,13 +211,21 @@ namespace OMS {
         
         #line 291 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.StackPanel panelInventory;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 305 "..\..\MainWindow.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button btnDeleteStockItem;
         
         #line default
         #line hidden
         
         
-        #line 309 "..\..\MainWindow.xaml"
+        #line 323 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBox txtInvSearch;
         
@@ -233,7 +233,7 @@ namespace OMS {
         #line hidden
         
         
-        #line 316 "..\..\MainWindow.xaml"
+        #line 330 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button btnSearchStockItem;
         
@@ -241,7 +241,7 @@ namespace OMS {
         #line hidden
         
         
-        #line 330 "..\..\MainWindow.xaml"
+        #line 344 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.ListView lvInventoryList;
         
@@ -249,7 +249,7 @@ namespace OMS {
         #line hidden
         
         
-        #line 380 "..\..\MainWindow.xaml"
+        #line 394 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBox txtAddStockItemName;
         
@@ -257,7 +257,7 @@ namespace OMS {
         #line hidden
         
         
-        #line 392 "..\..\MainWindow.xaml"
+        #line 406 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBox txtAddStockItemPrice;
         
@@ -265,7 +265,7 @@ namespace OMS {
         #line hidden
         
         
-        #line 404 "..\..\MainWindow.xaml"
+        #line 418 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.TextBox txtAddStockItemInStock;
         
@@ -273,7 +273,7 @@ namespace OMS {
         #line hidden
         
         
-        #line 410 "..\..\MainWindow.xaml"
+        #line 424 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.Button btnStocItemkAdd;
         
@@ -281,7 +281,7 @@ namespace OMS {
         #line hidden
         
         
-        #line 428 "..\..\MainWindow.xaml"
+        #line 442 "..\..\MainWindow.xaml"
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
         internal System.Windows.Controls.StackPanel panelExport;
         
@@ -429,46 +429,46 @@ namespace OMS {
             this.lvItems = ((System.Windows.Controls.ListView)(target));
             return;
             case 18:
-            this.lvOrderHeaders = ((System.Windows.Controls.ListView)(target));
-            
-            #line 211 "..\..\MainWindow.xaml"
-            this.lvOrderHeaders.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.lvOrderHeaders_SelectionChanged);
-            
-            #line default
-            #line hidden
-            return;
-            case 19:
-            this.btnOrderAdd = ((System.Windows.Controls.Button)(target));
-            
-            #line 241 "..\..\MainWindow.xaml"
-            this.btnOrderAdd.Click += new System.Windows.RoutedEventHandler(this.btnOrderAdd_Click);
-            
-            #line default
-            #line hidden
-            return;
-            case 20:
-            this.btnOrderDelete = ((System.Windows.Controls.Button)(target));
-            
-            #line 248 "..\..\MainWindow.xaml"
-            this.btnOrderDelete.Click += new System.Windows.RoutedEventHandler(this.btnOrderDelete_Click);
-            
-            #line default
-            #line hidden
-            return;
-            case 21:
             this.btnOrderAddItem = ((System.Windows.Controls.Button)(target));
             
-            #line 255 "..\..\MainWindow.xaml"
+            #line 212 "..\..\MainWindow.xaml"
             this.btnOrderAddItem.Click += new System.Windows.RoutedEventHandler(this.btnOrderAddItem_Click);
             
             #line default
             #line hidden
             return;
-            case 22:
+            case 19:
             this.btnOrderDeleteItem = ((System.Windows.Controls.Button)(target));
             
-            #line 262 "..\..\MainWindow.xaml"
+            #line 223 "..\..\MainWindow.xaml"
             this.btnOrderDeleteItem.Click += new System.Windows.RoutedEventHandler(this.btnOrderDeleteItem_Click);
+            
+            #line default
+            #line hidden
+            return;
+            case 20:
+            this.lvOrderHeaders = ((System.Windows.Controls.ListView)(target));
+            
+            #line 233 "..\..\MainWindow.xaml"
+            this.lvOrderHeaders.SelectionChanged += new System.Windows.Controls.SelectionChangedEventHandler(this.lvOrderHeaders_SelectionChanged);
+            
+            #line default
+            #line hidden
+            return;
+            case 21:
+            this.btnOrderAdd = ((System.Windows.Controls.Button)(target));
+            
+            #line 267 "..\..\MainWindow.xaml"
+            this.btnOrderAdd.Click += new System.Windows.RoutedEventHandler(this.btnOrderAdd_Click);
+            
+            #line default
+            #line hidden
+            return;
+            case 22:
+            this.btnOrderDelete = ((System.Windows.Controls.Button)(target));
+            
+            #line 276 "..\..\MainWindow.xaml"
+            this.btnOrderDelete.Click += new System.Windows.RoutedEventHandler(this.btnOrderDelete_Click);
             
             #line default
             #line hidden
@@ -479,7 +479,7 @@ namespace OMS {
             case 24:
             this.btnDeleteStockItem = ((System.Windows.Controls.Button)(target));
             
-            #line 296 "..\..\MainWindow.xaml"
+            #line 310 "..\..\MainWindow.xaml"
             this.btnDeleteStockItem.Click += new System.Windows.RoutedEventHandler(this.btnDeleteStockItem_Click);
             
             #line default
@@ -491,7 +491,7 @@ namespace OMS {
             case 26:
             this.btnSearchStockItem = ((System.Windows.Controls.Button)(target));
             
-            #line 320 "..\..\MainWindow.xaml"
+            #line 334 "..\..\MainWindow.xaml"
             this.btnSearchStockItem.Click += new System.Windows.RoutedEventHandler(this.btnSearchStockItem_Click);
             
             #line default
@@ -512,7 +512,7 @@ namespace OMS {
             case 31:
             this.btnStocItemkAdd = ((System.Windows.Controls.Button)(target));
             
-            #line 415 "..\..\MainWindow.xaml"
+            #line 429 "..\..\MainWindow.xaml"
             this.btnStocItemkAdd.Click += new System.Windows.RoutedEventHandler(this.btnStockItemAdd_Click);
             
             #line default
