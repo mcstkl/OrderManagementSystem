@@ -81,7 +81,8 @@ namespace OMS
         }
 
 
-        // +++++++++++++++++++++ MENU FUNCTIONS +++++++++++++++++++++++++++++++++
+        // +++++++++++++++++++++ MENU +++++++++++++++++++++++++++++++++++++++++
+        //Init
         private void InitializeMenu()
         {
             timer = new DispatcherTimer();
@@ -132,9 +133,7 @@ namespace OMS
             }
         }
 
-
-
-        // +++++++++++++++++++++++ MENU BUTTONS +++++++++++++++++++++++++++++++++++
+        //Buttons
         private void btnCloseX_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("Key pressed");
@@ -172,10 +171,86 @@ namespace OMS
             panelInventory.Visibility = Visibility.Hidden;
             panelExport.Visibility = Visibility.Visible;
         }
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+        // +++++++++++++++++++++++++++ HOME TAB +++++++++++++++++++++++++++++++
+        private void lblNewOrder_MouseEnter(object sender, MouseEventArgs e)
+        {
+            lblNewOrder.Foreground = new SolidColorBrush(Color.FromRgb(236, 109, 16));
+        }
+        private void lblNewOrder_MouseLeave(object sender, MouseEventArgs e)
+        {
+            lblNewOrder.Foreground = new SolidColorBrush(Color.FromRgb(215, 200, 24));
+        }
+        private void lblAddItem_MouseEnter(object sender, MouseEventArgs e)
+        {
+            lblAddItem.Foreground = new SolidColorBrush(Color.FromRgb(236, 109, 16));
+        }
+        private void lblAddItem_MouseLeave(object sender, MouseEventArgs e)
+        {
+            lblAddItem.Foreground = new SolidColorBrush(Color.FromRgb(215, 200, 24));
+        }
+        private void lblLoadInvList_MouseEnter(object sender, MouseEventArgs e)
+        {
+            lblLoadInvList.Foreground = new SolidColorBrush(Color.FromRgb(236, 109, 16));
+        }
+        private void lblLoadInvList_MouseLeave(object sender, MouseEventArgs e)
+        {
+            lblLoadInvList.Foreground = new SolidColorBrush(Color.FromRgb(215, 200, 24));
+        }
+        private void lblHelp_MouseEnter(object sender, MouseEventArgs e)
+        {
+            lblHelp.Foreground = new SolidColorBrush(Color.FromRgb(236, 109, 16));
+        }
+        private void lblHelp_MouseLeave(object sender, MouseEventArgs e)
+        {
+            lblHelp.Foreground = new SolidColorBrush(Color.FromRgb(215, 200, 24));
+        }
+        private void lblNewOrder_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            panelHome.Visibility = Visibility.Hidden;
+            panelOrders.Visibility = Visibility.Visible;
+            panelInventory.Visibility = Visibility.Hidden;
+            panelExport.Visibility = Visibility.Hidden;
+            btnOrdersMenu.Focus();
+        }
+        private void lblAddItem_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            panelHome.Visibility = Visibility.Hidden;
+            panelOrders.Visibility = Visibility.Hidden;
+            panelInventory.Visibility = Visibility.Visible;
+            panelExport.Visibility = Visibility.Hidden;
+        }
+        private void lblLoadInvList_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            panelHome.Visibility = Visibility.Hidden;
+            panelOrders.Visibility = Visibility.Hidden;
+            panelInventory.Visibility = Visibility.Visible;
+            panelExport.Visibility = Visibility.Hidden;
+        }
+
+        private void lblHelp_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+
+
 
 
         // +++++++++++++++++++++++++++ ORDER TAB +++++++++++++++++++++++++++++++
-        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //Init
         private void LoadOrderHeaderListView()
         {
@@ -245,7 +320,7 @@ namespace OMS
                 lvItems.SelectedIndex = 0;
                 lvItems.ScrollIntoView(lvItems.SelectedIndex);
                 LoadItemListView();
-            }catch(Exception ex)
+            }catch(Exception)
             {
                 MessageBox.Show($"Could not add item to order! Item has already been added", "Duplicate Item", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -431,15 +506,16 @@ namespace OMS
                 }
             }
         }
-
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
 
 
 
 
 
         // +++++++++++++++++++++++++ INVENTORY TAB ++++++++++++++++++++++++++++++++
-        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //Init
         public void LoadInventoryListBox()
         {
@@ -505,9 +581,7 @@ namespace OMS
             }
         }
 
-
         //Helpers
-
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     }

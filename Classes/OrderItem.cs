@@ -29,7 +29,8 @@ namespace OMS.Classes
                 {
                     if(item.Item_ID == this.Item_ID)
                     {
-                        orderDetail += $"{item.Name} - QTY: {this.Quantity} - Price: {this.Price}";
+                        orderDetail += $"{item.Name,-15}\t  {this.Price:C2}  \tQTY: {this.Quantity}";
+                      
                     }
                 }
                 return orderDetail; 
