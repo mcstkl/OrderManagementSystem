@@ -39,6 +39,7 @@ namespace OMS
             InitializeComponent();
             InitializeMenu();
             LoadOrderHeaderListView();
+            LoadInventoryListBox();
 
             #region hi
             //OrderHeader oh = new OrderHeader();
@@ -385,7 +386,6 @@ namespace OMS
         {
             LoadItemListView();
         }
-
         private void cboSearchItem_TextChanged(object sender, EventArgs e)
         {
             StockItemList allStockItems = new StockItemList();
@@ -407,8 +407,69 @@ namespace OMS
         // +++++++++++++++++++++++++ INVENTORY TAB ++++++++++++++++++++++++++++++++
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //Init
+        public void LoadInventoryListBox()
+        {
+            StockItemList allStockItems = new StockItemList();
+            lvInventoryList.ItemsSource = allStockItems;
+        }
 
         //Buttons
+        private void btnSearchStockItem_Click(object sender, RoutedEventArgs e)
+        {
+            StockItemList allItems = new StockItemList();
+            List<StockItem> searchedItems = new List<StockItem>();
+            foreach(var item in allItems)
+            {
+                if (item.Name.ToUpper().Contains(txtInvSearch.Text.ToUpper()))
+                {
+                    searchedItems.Add(item);
+                }
+            }
+            lvInventoryList.ItemsSource = searchedItems;
+        }
+        private void btnStockItemAdd_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                StockItem item = new StockItem();
+                item.Name = txtAddStockItemName.Text;
+                item.Price = int.Parse(txtAddStockItemPrice.Text);
+                item.InStock = int.Parse(txtAddStockItemInStock.Text);
+                item.Add();
+                LoadInventoryListBox();
+                txtAddStockItemName.Clear();
+                txtAddStockItemPrice.Clear();
+                txtAddStockItemInStock.Clear();
+            }
+            catch (Exception ex) {
+                MessageBox.Show($"Please fill in all fields to add an item\n Error: {ex.Message}", "Input Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        
+        }
+        private void btnDeleteStockItem_Click(object sender, RoutedEventArgs e)
+        {
+            StockItemList stockItems = new StockItemList();
+            StockItem itemToDelete = (StockItem)lvInventoryList.SelectedItem;
+            if(MessageBox.Show($"Do you really want to delete {itemToDelete.Name}?", "Delete Item?", 
+                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try
+                {
+
+                foreach (var item in stockItems)
+                {
+                    if (item.Item_ID == itemToDelete.Item_ID)
+                    {
+                        item.Delete();
+                    }
+                }
+                LoadInventoryListBox();
+                }catch(Exception ex)
+                {
+                    MessageBox.Show($"Something went wrong\nError: {ex.Message}", "Unable To Delete", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
 
 
         //Helpers

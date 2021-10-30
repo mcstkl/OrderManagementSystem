@@ -122,7 +122,7 @@
 
             </Grid>
         </StackPanel>
-        <StackPanel  x:Name="panelOrders" Visibility="Visible" Background="#486581" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
+        <StackPanel  x:Name="panelOrders" Visibility="Hidden" Background="#486581" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0*"></ColumnDefinition>
@@ -274,11 +274,11 @@
 
 
 
-        <StackPanel x:Name="panelInventory" Visibility="Hidden" Background="#486581 " VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
+        <StackPanel x:Name="panelInventory" Visibility="Visible" Background="#486581 " VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
-                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.6*"></ColumnDefinition>
+                    <ColumnDefinition Width="1.5*"></ColumnDefinition>
                     <ColumnDefinition Width="0.2*"></ColumnDefinition>
                     <ColumnDefinition Width="2*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
@@ -288,6 +288,19 @@
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
+                        <Button x:Name="btnDeleteStockItem" 
+                                    Grid.ColumnSpan="3" Grid.RowSpan="1" 
+                                    Grid.Row="4" Grid.Column="0" 
+                                    FontSize="18" Foreground="#333" FontWeight="Bold" 
+                                    Background="#d7c818" Margin="0 50 0 0" HorizontalAlignment="Center" 
+                                    Height="50" Width="150" Click="btnDeleteStockItem_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                    Delete Item
+                </Button>
                 <Label Grid.Row="0" Grid.Column="0"
                        Margin="10 10 0 0 "
                        FontSize="20" FontFamily="Century Gothic"
@@ -300,10 +313,11 @@
                          Template="{StaticResource TextBoxBaseControlTemplate}"
                          >
                 </TextBox>
-                <Button Grid.Row="0" Grid.Column="2"
+                <Button x:Name="btnSearchStockItem" Grid.Row="0" Grid.Column="2"
                         Height="30"
                         Margin="5 10 0 0 "
-                        Background="White"
+                        Background="#d7c818"
+                        Click="btnSearchStockItem_Click"
                         >
                     <Button.Resources>
                         <Style TargetType="Border">
@@ -313,10 +327,102 @@
                     <Image Source="icons/searchicon.png"/>
                 </Button>
 
-                <ListBox x:Name="lbInventoryList"
+                <ListView x:Name="lvInventoryList"
                          Grid.Row="1" Grid.Column="0"
                          Grid.ColumnSpan="3"
-                         Margin="10 10 0 0" Height="200"></ListBox>
+                         Margin="10 10 0 0" Height="250">
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Remove"
+                            Command="{Binding RemoveItem}"
+                             CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=ContextMenu}, Path=PlacementTarget.SelectedItem}" />
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="BorderBrush" Value="#486581"/>
+                            <Setter Property="FontSize" Value="15"/>
+                            <Setter Property="Foreground" Value="#333"/>
+                            <Setter Property="FontFamily" Value="Century Gothic"/>
+                            <Setter Property="FontWeight" Value="DemiBold"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="50" Header="Item_ID" DisplayMemberBinding="{Binding Path=Item_ID}"/>
+                            <GridViewColumn Width="150"  Header="Name" DisplayMemberBinding="{Binding Path=Name}"/>
+                            <GridViewColumn Width="70" Header="Price" DisplayMemberBinding="{Binding Path=Price}"/>
+                            <GridViewColumn Width="70"  Header="In Stock" DisplayMemberBinding="{Binding Path=InStock}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <Grid Grid.Row="1" Grid.Column="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.3*"></ColumnDefinition>
+                        <ColumnDefinition Width="1.2*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="1"
+                           Height="30" 
+                       HorizontalAlignment="Left"
+                       FontFamily="Century Gothic" FontSize="18"
+                       Foreground="white"
+                           >Item Name</Label>
+                    <TextBox x:Name="txtAddStockItemName" Grid.Row="0" Grid.Column="2"
+                             FontFamily="Century Gothic" FontSize="18"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" 
+                          Margin="0 5 0 0"
+                          Width="180" Height="30"
+                             ></TextBox>
+                    <Label Grid.Row="1" Grid.Column="1"
+                           Height="30"
+                       HorizontalAlignment="Left"
+                       FontFamily="Century Gothic" FontSize="18"
+                       Foreground="white"
+                           >Price</Label>
+                    <TextBox x:Name="txtAddStockItemPrice" Grid.Row="1" Grid.Column="2"
+                          FontFamily="Century Gothic" FontSize="18"
+                          HorizontalAlignment="Left" VerticalAlignment="Center" 
+                          Margin="0 5 0 0"
+                          Width="180" Height="30"
+                             ></TextBox>
+                    <Label Grid.Row="2" Grid.Column="1"
+                           Height="30"
+                       HorizontalAlignment="Left"
+                       FontFamily="Century Gothic" FontSize="18"
+                       Foreground="white"
+                           >In Stock</Label>
+                    <TextBox x:Name="txtAddStockItemInStock" Grid.Row="2" Grid.Column="2"
+                          FontFamily="Century Gothic" FontSize="18"
+                          HorizontalAlignment="Left" VerticalAlignment="Center" 
+                          Margin="0 5 0 0"
+                          Width="180" Height="30"
+                             ></TextBox>
+                            <Button x:Name="btnStocItemkAdd" 
+                                    Grid.ColumnSpan="2" Grid.RowSpan="1" 
+                                    Grid.Row="4" Grid.Column="2" 
+                                    FontSize="18" Foreground="#333" FontWeight="Bold" 
+                                    Background="#d7c818" Margin="15 0 0 0" HorizontalAlignment="Left" 
+                                    Height="50" Width="150" Click="btnStockItemAdd_Click">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="4"/>
+                            </Style>
+                        </Button.Resources>
+                        Add Item
+                    </Button>
+                    
+                </Grid>
+                
             </Grid>
         </StackPanel>
         <StackPanel x:Name="panelExport" Visibility="Hidden" Background="Violet" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
