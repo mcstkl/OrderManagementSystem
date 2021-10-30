@@ -6,6 +6,46 @@
         xmlns:local="clr-namespace:OMS"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="900" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" WindowStyle="None">
+    <Window.Resources>
+        <ControlTemplate x:Key="TextBoxBaseControlTemplate" TargetType="{x:Type TextBoxBase}">
+            <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd" BorderBrush="Black"
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="Width" Value="Auto">
+                    <Setter Property="MinWidth" Value="100"/>
+                </Trigger>
+                <Trigger Property="Height" Value="Auto">
+                    <Setter Property="MinHeight" Value="20"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        <ControlTemplate x:Key="ComboBaseControlTemplate" TargetType="{x:Type ComboBox}">
+            <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd" BorderBrush="Black"
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4">
+                <ScrollViewer x:Name="PART_ContentHost"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                    <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="Width" Value="Auto">
+                    <Setter Property="MinWidth" Value="100"/>
+                </Trigger>
+                <Trigger Property="Height" Value="Auto">
+                    <Setter Property="MinHeight" Value="20"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <Grid Background="#FFD6D6D6">
         <Grid x:Name="panelHeader" VerticalAlignment="Top" Height="50" Background="#FF0F4E7A" MouseDown="panelHeader_MouseDown">
             <Grid.ColumnDefinitions>
@@ -63,7 +103,7 @@
             </StackPanel>
         </Grid>
 
-        <StackPanel x:Name="panelHome" Visibility="Visible" Background="#486581" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
+        <StackPanel x:Name="panelHome" Visibility="Hidden" Background="#486581" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
@@ -82,7 +122,7 @@
 
             </Grid>
         </StackPanel>
-        <StackPanel  x:Name="panelOrders" Visibility="Hidden" Background="#486581" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
+        <StackPanel  x:Name="panelOrders" Visibility="Visible" Background="#486581" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0*"></ColumnDefinition>
@@ -96,15 +136,13 @@
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Grid.Column="1">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.5*"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition></RowDefinition>
-                        <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
@@ -120,21 +158,30 @@
                 <ComboBox Name="cboSearchItem" 
                           FontFamily="Century Gothic" FontSize="18"
                            HorizontalAlignment="Left" VerticalAlignment="Top" 
-                          Margin="0 10 0 0"
-                          Width="150" Height="25" Grid.Row="0" Grid.Column="1" 
+                          Margin="0 5 0 0"
+                          Width="200" Height="30" Grid.Row="0" Grid.Column="1" 
                           SelectedValuePath="Tag"
                           IsEditable="True" 
-                          IsTextSearchEnabled="True" >
-                </ComboBox>
+                          TextBoxBase.TextChanged="cboSearchItem_TextChanged"
+                          IsTextSearchEnabled="True" 
+                          
+                          />
                     <Label Width="100" Height="30" Grid.Row="1" Grid.Column="0"
                        FontFamily="Century Gothic" FontSize="18"
                        HorizontalAlignment="Center"
                        Foreground="white"
+                           
                        >Quantity</Label>
                     <TextBox x:Name="txtQuantity" FontFamily="Century Gothic" FontSize="18"
                            HorizontalAlignment="Left" VerticalAlignment="Top" 
-                          Margin="0 10 0 0"
-                          Width="150" Height="25" Grid.Row="1" Grid.Column="1" ></TextBox>
+                          Margin="0 5 0 0"
+                          PreviewTextInput="NumberValidationTextBox"
+                          Width="70" Height="30" Grid.Row="1" Grid.Column="1" ></TextBox>
+                    <Label Name="lblInventoryAmount" Margin="90 5 0 0" Grid.Row="1" Grid.Column="1"
+                           Foreground="#d7c818"
+                           FontFamily="Century Gothic" FontSize="16"
+                           FontStyle="Italic"
+                           ></Label>
                     <Label Width="100" Height="30" Grid.Row="3" Grid.Column="0"
                        FontFamily="Century Gothic" FontSize="18"
                        HorizontalAlignment="Center"
@@ -142,8 +189,8 @@
                        >Notes</Label>
                     <TextBox x:Name="txtDescription" FontFamily="Century Gothic" FontSize="18"
                            HorizontalAlignment="Left" VerticalAlignment="Top" 
-                          Margin="0 10 0 0"
-                          Width="150" Height="200" Grid.RowSpan="3" Grid.Row="2" Grid.Column="1" ></TextBox>
+                          Margin="0 5 0 0"
+                          Width="200" Height="135" Grid.RowSpan="4" Grid.Row="2" Grid.Column="1" ></TextBox>
                     <ListView x:Name="lvItems" Grid.RowSpan="5" Grid.Row="0" Grid.Column="3"
                               Grid.ColumnSpan="2"
                               Margin="0 10 10 0">
@@ -194,50 +241,82 @@
                 <Button x:Name="btnOrderAdd" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818"  Margin="20 0 0 0" HorizontalAlignment="Left" Height="50" Width="150" Grid.Column="0" Grid.Row="0" Click="btnOrderAdd_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="CornerRadius" Value="4"/>
                         </Style>
                     </Button.Resources>
                     Add Order</Button>
                 <Button x:Name="btnOrderDelete" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Height="50" Width="150" Grid.Column="1" Grid.Row="0" Click="btnOrderDelete_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="CornerRadius" Value="4"/>
                         </Style>
                     </Button.Resources>
                     Delete Order </Button>
                 <Button x:Name="btnOrderAddItem" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Margin="0 0 20 0" HorizontalAlignment="Right" Height="50" Width="150" Grid.Column="2" Grid.Row="0" Click="btnOrderAddItem_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="CornerRadius" Value="4"/>
                         </Style>
                     </Button.Resources>
                     Add Item</Button>
                 <Button x:Name="btnOrderDeleteItem" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Margin="0 0 20 0" HorizontalAlignment="Right" Height="50" Width="150" Grid.Column="3" Grid.Row="0" Click="btnOrderDeleteItem_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="CornerRadius" Value="4"/>
                         </Style>
                     </Button.Resources>
                     Delete Item
                 </Button>
+                    
                 </Grid>
             </Grid>
         </StackPanel>
 
 
 
-        <StackPanel x:Name="panelInventory" Visibility="Hidden" Background="Red" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
+        <StackPanel x:Name="panelInventory" Visibility="Hidden" Background="#486581 " VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="0.5*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.Column="0"
+                       Margin="10 10 0 0 "
+                       FontSize="20" FontFamily="Century Gothic"
+                       Foreground="white" FontWeight="DemiBold"
+                       >Search:</Label>
+                <TextBox x:Name="txtInvSearch" Grid.Row="0" Grid.Column="1"
+                         Margin="10 10 0 0 "
+                         FontSize="18" FontFamily="Century Gothic"
+                         Height="30"
+                         Template="{StaticResource TextBoxBaseControlTemplate}"
+                         >
+                </TextBox>
+                <Button Grid.Row="0" Grid.Column="2"
+                        Height="30"
+                        Margin="5 10 0 0 "
+                        Background="White"
+                        >
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="4"/>
+                        </Style>
+                    </Button.Resources>
+                    <Image Source="icons/searchicon.png"/>
+                </Button>
 
+                <ListBox x:Name="lbInventoryList"
+                         Grid.Row="1" Grid.Column="0"
+                         Grid.ColumnSpan="3"
+                         Margin="10 10 0 0" Height="200"></ListBox>
             </Grid>
         </StackPanel>
         <StackPanel x:Name="panelExport" Visibility="Hidden" Background="Violet" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">

@@ -18,6 +18,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using App.SqlHelper;
 using System.Windows.Threading;
+using System.Text.RegularExpressions;
 
 namespace OMS
 {
@@ -142,7 +143,6 @@ namespace OMS
         {
             Environment.Exit(0);
         }
-
         private void btnHomeMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             panelHome.Visibility = Visibility.Visible;
@@ -174,7 +174,7 @@ namespace OMS
 
 
         // +++++++++++++++++++++++++++ ORDER TAB +++++++++++++++++++++++++++++++
-
+        // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //Init
         private void LoadOrderHeaderListView()
         {
@@ -193,68 +193,7 @@ namespace OMS
             lvItems.ItemsSource = order;
         }
 
-
-        private void LoadComboBoxSearchItem()
-        {
-            cboSearchItem.Items.Clear();
-            try
-            {
-                StockItemList stockItems = new StockItemList();
-                stockItems.Sort();
-                foreach (var row in stockItems)
-                {
-                    ComboBoxItem item = new ComboBoxItem();
-                    item.Content = row.Name;
-                    item.Tag = row.Item_ID;
-                    cboSearchItem.Items.Add(item);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-
-        private void lvOrderHeaders_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            LoadItemListView();
-        }
-
-        private string OrderItemsToString()
-        {
-            OrderHeader oh = (OrderHeader)lvOrderHeaders.SelectedItem;
-            StockItemList allStockItems = new StockItemList();
-            if(oh != null)
-            {
-
-            
-                DataTable dtAllOrders = oh.GetAllOrderItems();
-                string orderDetails = String.Empty;
-                if (oh.OrderItems != null)
-                {
-                    foreach (DataRow row in dtAllOrders.Rows)
-                    {
-                        if ((int)row["OrderHeaderId"] == oh.ID)
-                        {
-                        
-                                foreach (StockItem item in allStockItems)
-                                {
-                                    if (item.Item_ID == (int)row["StockItemId"])
-                                    {
-                                        orderDetails += $"Item: {item.Name}\n";
-                                    }
-                                }
-                            orderDetails += $"Quantity: {row["Quantity"]}\n" +
-                                            $"Description: {row["Description"]}\n\n";
-                        }
-                    }
-                }
-            return orderDetails;
-            }
-            return "Nothing added";
-        }
-
+        //Buttons
         private void btnOrderAdd_Click(object sender, RoutedEventArgs e)
         {
             OrderHeader oh = new OrderHeader(1, DateTime.Now);
@@ -262,6 +201,38 @@ namespace OMS
             LoadOrderHeaderListView();
             lvOrderHeaders.SelectedIndex = 0;
             lvOrderHeaders.ScrollIntoView(lvOrderHeaders.SelectedIndex);
+        }
+        private void btnOrderAddItem_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int orderIndex = lvOrderHeaders.SelectedIndex;
+                OrderHeader order = (OrderHeader)lvOrderHeaders.SelectedItem;
+                OrderItem orderItem = new OrderItem();
+                StockItemList stockItems = new StockItemList();
+                foreach (var item in stockItems)
+                {
+                    if (item.Name == cboSearchItem.Text)
+                    {
+                        orderItem.Item_ID = item.Item_ID;
+                        orderItem.Price = item.Price;
+                    }
+                }
+                orderItem.Order_ID = order.ID;
+                orderItem.Description = txtDescription.Text;
+                orderItem.Quantity = int.Parse(txtQuantity.Text);
+                orderItem.AddItemToOrder();
+
+                LoadOrderHeaderListView();
+                lvOrderHeaders.SelectedIndex = orderIndex;
+                lvOrderHeaders.ScrollIntoView(orderIndex);
+                lvItems.SelectedIndex = 0;
+                lvItems.ScrollIntoView(lvItems.SelectedIndex);
+                LoadItemListView();
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Could not add item to order! Item has already been added", "Duplicate Item", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
         private void btnOrderDelete_Click(object sender, RoutedEventArgs e)
         {
@@ -300,34 +271,6 @@ namespace OMS
             {
                 MessageBox.Show("Please select an Order to be deleted first.");
             }
-        }
-
-        private void btnOrderAddItem_Click(object sender, RoutedEventArgs e)
-        {
-            int orderIndex = lvOrderHeaders.SelectedIndex;
-            OrderHeader order = (OrderHeader)lvOrderHeaders.SelectedItem;
-            OrderItem orderItem = new OrderItem();
-            StockItemList stockItems = new StockItemList();
-            foreach(var item in stockItems)
-            {
-                if(item.Name == cboSearchItem.Text)
-                {
-                    orderItem.Item_ID = item.Item_ID;
-                    orderItem.Price = item.Price;
-                }
-            }
-            orderItem.Order_ID = order.ID;
-            orderItem.Description = txtDescription.Text;
-            orderItem.Quantity = int.Parse(txtQuantity.Text);
-            orderItem.AddItemToOrder();
-
-            LoadOrderHeaderListView();
-            lvOrderHeaders.SelectedIndex = orderIndex;
-            lvOrderHeaders.ScrollIntoView(orderIndex);
-            lvItems.SelectedIndex = 0;
-            lvItems.ScrollIntoView(lvItems.SelectedIndex);
-            LoadItemListView();
-
         }
         private void btnOrderDeleteItem_Click(object sender, RoutedEventArgs e)
         {
@@ -372,5 +315,105 @@ namespace OMS
             }
            
         }
+
+        //Helpers
+        private void LoadComboBoxSearchItem()
+        {
+            cboSearchItem.Items.Clear();
+            try
+            {
+                StockItemList stockItems = new StockItemList();
+                stockItems.Sort();
+                foreach (var row in stockItems)
+                {
+                    ComboBoxItem item = new ComboBoxItem();
+                    item.Content = row.Name;
+                    item.Tag = row.Item_ID;
+                    cboSearchItem.Items.Add(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private string OrderItemsToString()
+        {
+            OrderHeader oh = (OrderHeader)lvOrderHeaders.SelectedItem;
+            StockItemList allStockItems = new StockItemList();
+            if (oh != null)
+            {
+
+
+                DataTable dtAllOrders = oh.GetAllOrderItems();
+                string orderDetails = String.Empty;
+                if (oh.OrderItems != null)
+                {
+                    foreach (DataRow row in dtAllOrders.Rows)
+                    {
+                        if ((int)row["OrderHeaderId"] == oh.ID)
+                        {
+
+                            foreach (StockItem item in allStockItems)
+                            {
+                                if (item.Item_ID == (int)row["StockItemId"])
+                                {
+                                    orderDetails += $"Item: {item.Name}\n";
+                                }
+                            }
+                            orderDetails += $"Quantity: {row["Quantity"]}\n" +
+                                            $"Description: {row["Description"]}\n\n";
+                        }
+                    }
+                }
+                return orderDetails;
+            }
+            return "Nothing added";
+        }
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            //Regex regex = new Regex("[^0-9]+");
+            //e.Handled = regex.IsMatch(e.Text);
+            e.Handled = !IsValid(((TextBox)sender).Text + e.Text);
+        }
+        public static bool IsValid(string str)
+        {
+            int i;
+            return int.TryParse(str, out i) && i >= 1 && i <= 99999;
+        }
+        private void lvOrderHeaders_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadItemListView();
+        }
+
+        private void cboSearchItem_TextChanged(object sender, EventArgs e)
+        {
+            StockItemList allStockItems = new StockItemList();
+            foreach(StockItem item in allStockItems)
+            {
+                if(item.Name == cboSearchItem.Text)
+                {
+                    lblInventoryAmount.Content = $"({item.InStock} In Stock)";
+                }
+            }
+        }
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+
+        // +++++++++++++++++++++++++ INVENTORY TAB ++++++++++++++++++++++++++++++++
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //Init
+
+        //Buttons
+
+
+        //Helpers
+
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     }
 }
