@@ -192,6 +192,7 @@ namespace OMS
             allItems = new OrderHeader();
             OrderHeader order = (OrderHeader)lvOrderHeaders.SelectedItem;
             lvItems.ItemsSource = order;
+            lblInventoryAmount.Content = "";
         }
 
         //Buttons
@@ -207,6 +208,8 @@ namespace OMS
         {
             try
             {
+                
+                StockItem addedStockItem = new StockItem();
                 int orderIndex = lvOrderHeaders.SelectedIndex;
                 OrderHeader order = (OrderHeader)lvOrderHeaders.SelectedItem;
                 OrderItem orderItem = new OrderItem();
@@ -217,12 +220,24 @@ namespace OMS
                     {
                         orderItem.Item_ID = item.Item_ID;
                         orderItem.Price = item.Price;
+                        addedStockItem = item;
                     }
                 }
                 orderItem.Order_ID = order.ID;
                 orderItem.Description = txtDescription.Text;
                 orderItem.Quantity = int.Parse(txtQuantity.Text);
-                orderItem.AddItemToOrder();
+                if(orderItem.Quantity <= addedStockItem.InStock)
+                {
+                    addedStockItem.InStock -= orderItem.Quantity;
+                    addedStockItem.Update();
+                    orderItem.AddItemToOrder();
+                }
+                else
+                {
+                    MessageBox.Show($"Could not add {addedStockItem.Name} to order. Stock insufficient", "Not enough items in Stock", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                txtQuantity.Clear();
+                txtDescription.Clear();
 
                 LoadOrderHeaderListView();
                 lvOrderHeaders.SelectedIndex = orderIndex;
@@ -232,40 +247,49 @@ namespace OMS
                 LoadItemListView();
             }catch(Exception ex)
             {
-                MessageBox.Show("Could not add item to order! Item has already been added", "Duplicate Item", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Could not add item to order! Item has already been added", "Duplicate Item", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void btnOrderDelete_Click(object sender, RoutedEventArgs e)
         {
+            
             if (lvOrderHeaders.SelectedItem != null)
             {
-                string message = $"Are you sure yo want to delete this Order? \n" +
-                                    $"The Order Details and all Order items will be permanently deleted!";
-                string caption = "Delete Order?";
-                if (MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
-                    MessageBoxResult.Yes)
+                
+                OrderHeader selectedOrder = (OrderHeader)lvOrderHeaders.SelectedItem;
+                if (selectedOrder.Count > 0)
                 {
-                    OrderHeader selectedOrder = (OrderHeader)lvOrderHeaders.SelectedItem;
-                    try
-                    {
-                        if (selectedOrder.DeleteOrder(selectedOrder.ID) == 1)
-                        {
-                            MessageBox.Show("Order successfully deleted!", "Success", MessageBoxButton.OK,
-                                MessageBoxImage.Information);
-                            LoadOrderHeaderListView();
-                            lvOrderHeaders.SelectedIndex = 0;
-                            lvOrderHeaders.ScrollIntoView(lvOrderHeaders.SelectedIndex);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        message = $"Something went wrong!\nThe Order details were not deleted!\n{ex.Message}";
-                        MessageBox.Show(message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    MessageBox.Show("Please delete all items before deleting the order", "Order not empty", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
-                    MessageBox.Show("Order was not deleted", "Operation canceled", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    string message = $"Are you sure yo want to delete this Order? \n" +
+                                        $"The Order Details will be permanently deleted!";
+                    string caption = "Delete Order?";
+                    if (MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning) ==
+                        MessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            if (selectedOrder.DeleteOrder(selectedOrder.ID) == 1)
+                            {
+                                MessageBox.Show("Order successfully deleted!", "Success", MessageBoxButton.OK,
+                                    MessageBoxImage.Information);
+                                LoadOrderHeaderListView();
+                                lvOrderHeaders.SelectedIndex = 0;
+                                lvOrderHeaders.ScrollIntoView(lvOrderHeaders.SelectedIndex);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            message = $"Something went wrong!\nThe Order details were not deleted!\n{ex.Message}";
+                            MessageBox.Show(message, "Error!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Order was not deleted", "Operation canceled", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 }
             }
             else
@@ -287,8 +311,18 @@ namespace OMS
                     OrderItem item = (OrderItem)lvItems.SelectedItem;
                     try
                     {
+                        StockItemList stockItems = new StockItemList();
+                        StockItem deletedStock = new StockItem();
+                        foreach(var stockItem in stockItems)
+                        {
+                            if (stockItem.Item_ID == item.Item_ID) 
+                                deletedStock = stockItem;
+                        }
+                        int deletedQuantity = item.Quantity;
                         if (item.DeleteOrderItem() == 1)
                         {
+                            deletedStock.InStock += deletedQuantity;
+                            deletedStock.Update();
                             MessageBox.Show("Item successfully deleted!", "Success", MessageBoxButton.OK,
                             MessageBoxImage.Information);
                             LoadOrderHeaderListView();

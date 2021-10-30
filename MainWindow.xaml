@@ -122,7 +122,7 @@
 
             </Grid>
         </StackPanel>
-        <StackPanel  x:Name="panelOrders" Visibility="Hidden" Background="#486581" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
+        <StackPanel x:Name="panelOrders" Visibility="Visible" Background="#486581" VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0*"></ColumnDefinition>
@@ -245,7 +245,7 @@
                         </Style>
                     </Button.Resources>
                     Add Order</Button>
-                <Button x:Name="btnOrderDelete" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Height="50" Width="150" Grid.Column="1" Grid.Row="0" Click="btnOrderDelete_Click">
+                    <Button x:Name="btnOrderDelete" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Height="50" Width="150" Grid.Column="1" Grid.Row="0" Click="btnOrderDelete_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="4"/>
@@ -259,7 +259,7 @@
                         </Style>
                     </Button.Resources>
                     Add Item</Button>
-                <Button x:Name="btnOrderDeleteItem" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Margin="0 0 20 0" HorizontalAlignment="Right" Height="50" Width="150" Grid.Column="3" Grid.Row="0" Click="btnOrderDeleteItem_Click">
+                    <Button x:Name="btnOrderDeleteItem" FontSize="18" Foreground="#333" FontWeight="Bold" Background="#d7c818" Margin="0 0 20 0" HorizontalAlignment="Right" Height="50" Width="150" Grid.Column="3" Grid.Row="0" Click="btnOrderDeleteItem_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="4"/>
@@ -274,7 +274,7 @@
 
 
 
-        <StackPanel x:Name="panelInventory" Visibility="Visible" Background="#486581 " VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
+        <StackPanel x:Name="panelInventory" Visibility="Hidden" Background="#486581 " VerticalAlignment="Bottom"  HorizontalAlignment="Right" Height="550" Width="750">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.6*"></ColumnDefinition>

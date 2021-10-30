@@ -95,6 +95,15 @@ namespace OMS.Classes
             }
 
         }
+        public int Update()
+        {
+            SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
+            SqlParameter[] parameters = {new SqlParameter("@Item_ID", this.Item_ID),
+                                         new SqlParameter("@Name", this.Name),
+                                         new SqlParameter("@Price", this.Price),
+                                         new SqlParameter("@InStock", this.InStock)};
+            return myDal.ExecuteNonQuerySP("usp_UpdateStockItem", parameters);
+        }
         public int Update(int itemID, string name, double price, int instock)
         {
             SqlDataAccessLayer myDal = new SqlDataAccessLayer(connectionString);
